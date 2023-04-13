@@ -1,5 +1,5 @@
 import { TodosAccess } from './todosAcess'
-// import { AttachmentUtils } from './attachmentUtils';
+import { AttachmentUtils } from './attachmentUtils'
 // import { TodoItem } from '../models/TodoItem'
 // import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
@@ -8,7 +8,7 @@ import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 // TODO: Implement businessLogic
 const todoAccess = new TodosAccess();
-// const attachmentAccess = new AttachmentUtils();
+const attachmentAccess = new AttachmentUtils();
 // Get todo
 export async function getTodosForUser(userId: string) {
     //Get todos created by user id
@@ -30,3 +30,13 @@ export async function updateTodosForUser(todoId: String, userId: String, data: U
     return todoAccess.updateTodo(todoId, userId, data);
 }
 
+
+// create attachment
+export async function createAttachmentPresignedUrl(todoId: String, userId: String, attachmentUrl: String) {
+    return attachmentAccess.updateTodoAttachmentUrl(todoId, userId, attachmentUrl);
+}
+
+// get url
+export async function getUploadUrl(imageId: String) {
+    return attachmentAccess.getUploadUrl(imageId);
+}

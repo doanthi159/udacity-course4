@@ -4,16 +4,34 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
 
-// import { createAttachmentPresignedUrl } from '../../businessLogic/todos'
-// import { getUserId } from '../utils'
+import { createAttachmentPresignedUrl, getUploadUrl} from '../../helpers/todos'
+import { getUserId } from '../utils'
+import * as uuid from 'uuid'
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId = event.pathParameters.todoId
+    const userId = getUserId(event)
+    const imageId = uuid.v4()
+    const bucketName = process.env.ATTACHMENT_S3_BUCKET
+    
     // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
-    console.log(todoId)
+    //Generate presigned url
+    const uploadUrl = await getUploadUrl(imageId);
 
-    return undefined
+    //Generate attachmentUrl
+    const attachmentUrl = `https://${bucketName}.s3.amazonaws.com/${imageId}`
+    await createAttachmentPresignedUrl(todoId, userId, attachmentUrl);
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
+      },
+      body: JSON.stringify({
+        uploadUrl: uploadUrl
+      })
+    }
   }
 )
 

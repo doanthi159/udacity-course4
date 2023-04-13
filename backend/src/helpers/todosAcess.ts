@@ -9,7 +9,7 @@ const XAWS = AWSXRay.captureAWS(AWS)
 
 // const logger = createLogger('TodosAccess')
 
-// TODO: Implement the dataLayer logic
+// TODOdone: Implement the dataLayer logic
 export class TodosAccess {
 
     constructor(
