@@ -40,3 +40,8 @@ export async function createAttachmentPresignedUrl(todoId: String, userId: Strin
 export async function getUploadUrl(imageId: String) {
     return attachmentAccess.getUploadUrl(imageId);
 }
+
+// update todo
+export async function deleteImageTodo(todoId: String, userId: String) {
+    return todoAccess.deleteImageTodo(todoId, userId);
+}

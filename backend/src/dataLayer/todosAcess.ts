@@ -62,6 +62,22 @@ export class TodosAccess {
         return data;
     }
 
+    async deleteImageTodo(todoId: String, userId: String) {
+
+        return await this.docClient.update({
+            TableName: this.todosTable,
+            Key: {
+                userId,
+                todoId
+            },
+            UpdateExpression: "set attachmentUrl=:attachmentUrl",
+            ExpressionAttributeValues : {
+                ":attachmentUrl": '',
+            },
+            ReturnValues:"UPDATED_NEW"
+        }).promise()
+    }
+
     async deleteTodo(todoId: String, userId: String) {
         return await this.docClient.delete({
             TableName: this.todosTable,

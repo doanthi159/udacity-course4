@@ -103,6 +103,23 @@ functions:
           - xray:PutTraceSegments
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
+  DeleteImages:
+    handler: src/lambda/http/deleteImages.handler
+    events:
+      - http:
+          method: patch
+          path: todos/{todoId}/images
+          cors: true
+          authorizer: Auth
+    iamRoleStatementsInherit: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+          - xray:PutTelemetryRecords
+          - xray:PutTraceSegments
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+
   # TODOdone: Configure this function
   # Provide property for setting up CORS, Authorizer, iamRoleStatements
   DeleteTodo:
